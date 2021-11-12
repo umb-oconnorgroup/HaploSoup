@@ -1,0 +1,5 @@
+shingle_size: 16
+n_permutations: 20
+n_bands: 4
+max_components: 50
+explained_variance_ratio_target: .5
