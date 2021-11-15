@@ -23,7 +23,7 @@ def main():
 
     ds = sg.window_by_variant(ds, size=window_size, merge=True)
     pruned_ds = sg.ld_prune(ds, threshold=THRESHOLD)
-    pruned_ds = pruned_ds.unify_chunks()
+    pruned_ds = pruned_ds.chunk(10000, 1000)
 
     pruned_ds.to_zarr(base_name + ".pruned_at_{}.zarr".format(THRESHOLD), "w")
 
