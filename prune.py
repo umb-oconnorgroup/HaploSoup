@@ -2,6 +2,7 @@ from pathlib import Path
 import sys
 
 import sgkit as sg
+import zarr
 
 
 THRESHOLD = 0.2
@@ -22,7 +23,7 @@ def main():
 
     ds = sg.window_by_variant(ds, size=window_size, merge=True)
     pruned_ds = sg.ld_prune(ds, threshold=THRESHOLD)
-    pruned_ds.chunk({"variants": 10000, "samples": 1000})
+    pruned_ds = pruned_ds.unify_chunks()
 
     sg.save_dataset(pruned_ds, base_name + ".pruned_at_{}.zarr".format(THRESHOLD))
 
