@@ -25,7 +25,7 @@ def main():
     pruned_ds = sg.ld_prune(ds, threshold=THRESHOLD)
     pruned_ds = pruned_ds.unify_chunks()
 
-    sg.save_dataset(pruned_ds, base_name + ".pruned_at_{}.zarr".format(THRESHOLD))
+    pruned_ds.to_zarr(base_name + ".pruned_at_{}.zarr".format(THRESHOLD), "w")
 
 
 if __name__ == "__main__":
