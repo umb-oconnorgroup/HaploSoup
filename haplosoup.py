@@ -4,6 +4,7 @@ import math
 import sys
 
 # prevent sklearn multiprocessing to let dask handle multiprocessing
+os.environ["OMP_NUM_THREADS"] = "1"
 os.environ["OPENBLAS_NUM_THREADS"] = "1"
 
 import dask.array as da
