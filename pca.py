@@ -17,6 +17,7 @@ def main():
     base_name = Path(zarr_path.rsplit("/", 1)[0]).stem
 
     dosage_array = da.from_zarr(zarr_path).T
+    dosage_array = dosage_array.rechunk({1: dosage_array.shape[1]})
     standard_scaler = StandardScaler()
     scaled_dosage_array = standard_scaler.fit_transform(dosage_array)
     u, s, vt = da.linalg.svd_compressed(scaled_dosage_array, k=N_COMPONENTS, n_power_iter=N_POWER_ITER, compute=True)
