@@ -7,7 +7,6 @@ from dask_ml.preprocessing import StandardScaler
 # from dask_ml.utils import svd_flip
 from joblib import dump
 import numpy as np
-import sgkit as sg
 
 
 N_COMPONENTS = 50
@@ -15,15 +14,9 @@ N_POWER_ITER = 2
 
 def main():
     zarr_path = sys.argv[1]
-    variable_name = sys.argv[2]
+    base_name = Path(zarr_path.rsplit("/", 1)[0]).stem
 
-    base_name = Path(zarr_path).stem
-
-    ds = sg.load_dataset(zarr_path)
-    if variable_name not in ds.variables:
-        raise ValueError("{} not in dataset variables".format(variable_name))
-
-    dosage_array = ds[variable_name].T
+    dosage_array = da.from_zarr(zarr_path).T
     standard_scaler = StandardScaler()
     scaled_dosage_array = standard_scaler.fit_transform(dosage_array)
     u, s, vt = da.linalg.svd_compressed(scaled_dosage_array, k=N_COMPONENTS, n_power_iter=N_POWER_ITER, compute=True)
