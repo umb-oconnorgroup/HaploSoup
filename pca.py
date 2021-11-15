@@ -10,7 +10,7 @@ import numpy as np
 
 
 N_COMPONENTS = 50
-N_POWER_ITER = 2
+N_POWER_ITER = 4
 
 def main():
     zarr_path = sys.argv[1]
