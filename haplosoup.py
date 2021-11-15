@@ -1,6 +1,7 @@
-import os
 from collections import Counter
 import math
+import os
+from pathlib import Path
 import sys
 
 # prevent sklearn multiprocessing to let dask handle multiprocessing
@@ -105,6 +106,8 @@ def main():
     zarr_path = sys.argv[1]
     msp_path = sys.argv[2]
 
+    base_name = Path(zarr_path).stem
+
     with open(CONFIG_PATH, "r") as f:
         config = yaml.load(f, yaml.UnsafeLoader)
 
@@ -145,7 +148,7 @@ def main():
     bucket_matrix = np.hstack(bucket_matrices)
     haplosoup_embedding = bucket_matrix.T.reshape(bucket_matrix.shape[-1], ds.call_genotype.sizes["samples"], ds.call_genotype.sizes["ploidy"])
     haplosoup_embedding = xr.DataArray(data=haplosoup_embedding, dims=["buckets", "samples", "ploidy"]).sum("ploidy")
-    haplosoup_embedding.to_dataset(name="haplosoup_embedding").to_zarr("haplosoup.zarr")
+    haplosoup_embedding.to_dataset(name="haplosoup_embedding").to_zarr(base_name + ".haplosoup.zarr")
 
 if __name__ == "__main__":
     main()
