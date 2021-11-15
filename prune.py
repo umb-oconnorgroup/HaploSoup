@@ -22,6 +22,7 @@ def main():
 
     ds = sg.window_by_variant(ds, size=window_size, merge=True)
     pruned_ds = sg.ld_prune(ds, threshold=THRESHOLD)
+    pruned_ds.chunk({"variants": 10000, "samples": 1000})
 
     sg.save_dataset(pruned_ds, base_name + ".pruned_at_{}.zarr".format(THRESHOLD))
 
