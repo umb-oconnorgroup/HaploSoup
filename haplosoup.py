@@ -144,7 +144,7 @@ def main():
     bucket_matrices = [bucket_matrix[:, :haplosoup_window_size].astype(np.uint8) for bucket_matrix, haplosoup_window_size in zip(bucket_matrices, haplosoup_window_sizes)]
     bucket_matrix = np.hstack(bucket_matrices)
     haplosoup_embedding = bucket_matrix.T.reshape(bucket_matrix.shape[-1], ds.call_genotype.sizes["samples"], ds.call_genotype.sizes["ploidy"])
-    haplosoup_embedding = xr.DataArray(data=haplosoup_embedding, dims=["buckets", "samples", "ploidy"])
+    haplosoup_embedding = xr.DataArray(data=haplosoup_embedding, dims=["buckets", "samples", "ploidy"]).sum("ploidy")
     haplosoup_embedding.to_dataset(name="haplosoup_embedding").to_zarr("haplosoup.zarr")
 
 if __name__ == "__main__":
